@@ -13,6 +13,7 @@ Copyright (C) 2021 Continuum Robotics Laboratory, University of Toronto Mississa
 
 #include "pseudorigidbodymodel.h"
 
+// Wrapper function for non-linear boundary conditions for GNU::GSL
 int evaluate_boundary_conditions_prb(const gsl_vector * x, void *param, gsl_vector * f)
 {
 
@@ -49,6 +50,7 @@ int evaluate_boundary_conditions_prb(const gsl_vector * x, void *param, gsl_vect
     return GSL_SUCCESS;
 }
 
+// Callback function that can be used during non-linear squares solving
 void
 callback_prb(const size_t iter, void *param,
          const gsl_multifit_nlinear_workspace *w)
@@ -56,7 +58,7 @@ callback_prb(const size_t iter, void *param,
 
     PseudoRigidBodyModel *model = (PseudoRigidBodyModel*)param;
 
-    //Pring current iteration
+    //Print current iteration
     std::cout << "Iteration " << iter << std::endl;
 
     gsl_vector * x = gsl_multifit_nlinear_position(w);
@@ -82,6 +84,7 @@ callback_prb(const size_t iter, void *param,
 
 PseudoRigidBodyModel::PseudoRigidBodyModel()
 {
+	//Initialize member variables and set up default parameters for TDCR
     m_length[0]         = 0.1;
     m_length[1]         = 0.1;
     m_youngs_modulus    = 60e9;

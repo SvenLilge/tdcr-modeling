@@ -47,7 +47,7 @@ public:
     // This function runs the forward kinematics for the TDCR. It returns true, if the forward kinematics were solved successfully.
 	//
 	// Inputs:
-	// q 					6x1 vector containing the actuation values for each tendon (either force in Newton or displacements in meter).
+	// q 					6x1 vector containing the actuation values for each tendon (force in Newton).
 	// 	   					First three entries belong to the first segment, while the last three entries belong to the second segment.
 	// f_ext				3x1 vector containing the external force acting at the tip/end-effector of the robot expressed in the base frame.	 
 	// l_ext				3x1 vector containing the external moment acting at the tip/end-effector of the robot expressed in the base frame.	

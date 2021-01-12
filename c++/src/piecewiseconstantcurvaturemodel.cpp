@@ -56,7 +56,7 @@ callback_pcc(const size_t iter, void *param,
 
     PiecewiseConstantCurvatureModel *model = (PiecewiseConstantCurvatureModel*)param;
 
-    //Pring current iteration
+    //Print current iteration
     std::cout << "Iteration " << iter << std::endl;
 
     gsl_vector * x = gsl_multifit_nlinear_position(w);
