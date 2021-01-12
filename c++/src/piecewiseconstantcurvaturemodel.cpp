@@ -13,6 +13,7 @@ Copyright (C) 2021 Continuum Robotics Laboratory, University of Toronto Mississa
 
 #include "piecewiseconstantcurvaturemodel.h"
 
+// Wrapper function for non-linear boundary conditions for GNU::GSL
 int evaluate_boundary_conditions_pcc(const gsl_vector * x, void *param, gsl_vector * f)
 {
 
@@ -31,13 +32,11 @@ int evaluate_boundary_conditions_pcc(const gsl_vector * x, void *param, gsl_vect
     }
 
 
-    //Function that needs to be minimized goes here
 
     model->get_res(outputs, inputs);
 
 
 
-    //Functions that needs to be minimized ends here
 
     for(int i = 0; i < 3*model->getNumberOfTotalDisks(); i++)
     {
@@ -49,6 +48,7 @@ int evaluate_boundary_conditions_pcc(const gsl_vector * x, void *param, gsl_vect
     return GSL_SUCCESS;
 }
 
+// Callback function that can be used during non-linear squares solving
 void
 callback_pcc(const size_t iter, void *param,
          const gsl_multifit_nlinear_workspace *w)
@@ -82,6 +82,7 @@ callback_pcc(const size_t iter, void *param,
 
 PiecewiseConstantCurvatureModel::PiecewiseConstantCurvatureModel()
 {
+	//Initialize member variables and set up default parameters for TDCR
     m_length[0]         = 0.1;
     m_length[1]         = 0.1;
     m_youngs_modulus    = 60e9;
