@@ -16,17 +16,9 @@ Copyright (C) 2021 Continuum Robotics Laboratory, University of Toronto Mississa
 
 #include <Eigen/Core>
 #include <vector>
-#include <gsl/gsl_odeiv2.h>
-#include <gsl/gsl_multiroots.h>
-#include <gsl/gsl_matrix.h>
-#include <gsl/gsl_vector.h>
-#include <gsl/gsl_blas.h>
-#include <gsl/gsl_multifit_nlinear.h>
-#include <gsl/gsl_multilarge_nlinear.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
-#include <iomanip>
 #include <cmath>
 #include <array>
 
