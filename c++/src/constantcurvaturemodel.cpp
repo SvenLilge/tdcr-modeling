@@ -15,6 +15,7 @@ Copyright (C) 2021 Continuum Robotics Laboratory, University of Toronto Mississa
 
 ConstantCurvatureModel::ConstantCurvatureModel()
 {
+	//Initialize member variables and set up default parameters for TDCR
     m_length[0]         = 0.1;
     m_length[1]         = 0.1;
     m_number_disks[0]   = 10;
@@ -27,6 +28,8 @@ ConstantCurvatureModel::ConstantCurvatureModel()
 
 void ConstantCurvatureModel::setRobotParameters(std::array<double, 2> length, std::array<int, 2> number_disks, std::array<double, 2> pradius_disks, bool two_tendons)
 {
+	
+	//Update parameters
     m_length[0]         = length[0];
     m_length[1]         = length[1];
     m_number_disks[0]   = number_disks[0];
@@ -44,12 +47,12 @@ ConstantCurvatureModel::~ConstantCurvatureModel()
 
 bool ConstantCurvatureModel::forwardKinematics(Eigen::MatrixXd &diskFrames, Eigen::MatrixXd q)
 {
-    //Compute arc parameters for each segment
+    // Compute arc parameters for each segment
     double kappa1, kappa2;
     double phi1, phi2;
     double l1, l2;
 
-    //Calculate tendon lengths
+    // Calculate tendon lengths
     Eigen::Vector3d l_t1;
     l_t1 <<     m_length[0] - q(0),
             m_length[0] - q(1),
@@ -61,7 +64,9 @@ bool ConstantCurvatureModel::forwardKinematics(Eigen::MatrixXd &diskFrames, Eige
             m_length[1] - q(5);
 
 
-    //First segment
+    // First segment
+    
+    // Check if tendon is straight
     double temp =std::sqrt(l_t1(0)*l_t1(0) + l_t1(1)*l_t1(1) + l_t1(2)*l_t1(2) - l_t1(0)*l_t1(1) - l_t1(0)*l_t1(2) - l_t1(1)*l_t1(2));
 
     if(m_two_tendons == false)
@@ -74,13 +79,16 @@ bool ConstantCurvatureModel::forwardKinematics(Eigen::MatrixXd &diskFrames, Eige
             l1 = l_t1(0);
         }
         else
-        {
+        {	
+			// Compute arc parameters
             kappa1 = 2*temp/(m_pradius_disks[0]*(l_t1(0) + l_t1(1) + l_t1(2)));
             phi1 = std::atan2(sqrt(3)*(l_t1(1)+l_t1(2)-2*l_t1(0)),3*(l_t1(2)-l_t1(1)));
             l1 = ((m_number_disks[0]*m_pradius_disks[0]*(l_t1(0)+l_t1(1)+l_t1(2)))/temp)*std::asin(temp/(3*m_number_disks[0]*m_pradius_disks[0]));
         }
 
-        //Second segment
+        // Second segment
+        
+		// Check if tendon is straight
         temp =std::sqrt(l_t2(0)*l_t2(0) + l_t2(1)*l_t2(1) + l_t2(2)*l_t2(2) - l_t2(0)*l_t2(1) - l_t2(0)*l_t2(2) - l_t2(1)*l_t2(2));
 
         if(temp == 0 || std::isnan(temp))
@@ -91,6 +99,7 @@ bool ConstantCurvatureModel::forwardKinematics(Eigen::MatrixXd &diskFrames, Eige
         }
         else
         {
+			// Compute arc parameters
             kappa2 = 2*temp/(m_pradius_disks[1]*(l_t2(0) + l_t2(1) + l_t2(2)));
             phi2 = std::atan2(sqrt(3)*(l_t2(1)+l_t2(2)-2*l_t2(0)),3*(l_t2(2)-l_t2(1)));
             l2 = ((m_number_disks[1]*m_pradius_disks[1]*(l_t2(0)+l_t2(1)+l_t2(2)))/temp)*std::asin(temp/(3*m_number_disks[1]*m_pradius_disks[1]));
@@ -134,7 +143,7 @@ bool ConstantCurvatureModel::forwardKinematics(Eigen::MatrixXd &diskFrames, Eige
         }
     }
 
-    //Calculate disk transformation matrices
+    //Calculate disk transformation matrices using robot independent mapping
 
     //First segment
     Eigen::MatrixXd disk_frames1;
@@ -165,7 +174,7 @@ bool ConstantCurvatureModel::forwardKinematics(Eigen::MatrixXd &diskFrames, Eige
                     -s_ks, 0, c_ks, s_ks/kappa1,
                     0, 0, 0, 1;
         }
-        //Apply Transformation to fix the z-axis
+        //Apply Transformation to fix the z-axis (local z-orientation stays fixed for TDCR)
         Eigen::Matrix4d rot_phi;
         rot_phi << std::cos(phi1), std::sin(phi1), 0, 0,
                 -std::sin(phi1), std::cos(phi1),0, 0,
