@@ -56,6 +56,6 @@ If you found the provided implementation of the TDCR modeling approaches helpful
 		journal={Frontiers in Robotics and AI},
 		volume={7},
 		pages={},
-		year={2020},
+		year={2021},
 		publisher={Frontiers}
 	}
