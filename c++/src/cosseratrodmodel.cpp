@@ -13,6 +13,7 @@ Copyright (C) 2021 Continuum Robotics Laboratory, University of Toronto Mississa
 
 #include "cosseratrodmodel.h"
 
+// Wrapper function for ODEs for GNU::GSL
 int differential_equations_cr(double t, const double input[2], double deriv[2], void *param)
 {
 
@@ -40,6 +41,7 @@ int differential_equations_cr(double t, const double input[2], double deriv[2], 
     return GSL_SUCCESS;
 }
 
+// Wrapper function for non-linear boundary conditions for GNU::GSL
 int evaluate_boundary_conditions_cr(const gsl_vector * x, void *param, gsl_vector * f)
 {
 
@@ -52,15 +54,8 @@ int evaluate_boundary_conditions_cr(const gsl_vector * x, void *param, gsl_vecto
         inputs(i,0) = gsl_vector_get (x, i);
     }
 
-
-    //Function that needs to be minimized goes here
-
     CosseratRodModel *model = (CosseratRodModel*)param;
     model->get_res(outputs, inputs);
-
-
-
-    //Functions that needs to be minimized ends here
 
     for(int i = 0; i < 6; i++)
     {
@@ -72,6 +67,8 @@ int evaluate_boundary_conditions_cr(const gsl_vector * x, void *param, gsl_vecto
     return GSL_SUCCESS;
 }
 
+
+// Callback function that can be used during non-linear squares solving
 void
 callback_cr(const size_t iter, void *params,
             const gsl_multifit_nlinear_workspace *w)
@@ -103,6 +100,7 @@ callback_cr(const size_t iter, void *params,
 
 CosseratRodModel::CosseratRodModel()
 {
+	//Initialize member variables and set up default parameters for TDCR
     m_length[0]         = 0.1;
     m_length[1]         = 0.1;
     m_youngs_modulus    = 60e9;
@@ -190,6 +188,7 @@ CosseratRodModel::CosseratRodModel()
 
 void CosseratRodModel::setRobotParameters(std::array<double, 2> length, double youngs_modulus, std::vector<Eigen::Vector3d> routing, std::array<int, 2> number_disks, std::array<double, 2> pradius_disks, double ro)
 {
+	//Update parameters
     m_length[0]         = length[0];
     m_length[1]         = length[1];
     m_youngs_modulus    = youngs_modulus;

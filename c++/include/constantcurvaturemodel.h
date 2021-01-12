@@ -37,7 +37,7 @@ public:
     ConstantCurvatureModel();
     
 	// Simple destructor
-    ~ConstantCurvatureModel();
+    virtual ~ConstantCurvatureModel();
 	
 	// This function runs the forward kinematics for the TDCR. It returns true, if the forward kinematics were solved successfully.
 	//
@@ -46,7 +46,7 @@ public:
 	// 	   					First three entries belong to the first segment, while the last three entries belong to the second segment.
 	//		
 	// Outputs:		
-	// ee_frame				4x4 matrix containing the end-effector pose as a 4x4 frame (R p; 0 0 0 1).	
+	// diskFrames			4x(4*n) matrix containing the current disk frames (4x4 transformation matrix for each discrete disk) of the robot as a stacked matrix.
     bool forwardKinematics(Eigen::MatrixXd &diskFrames, Eigen::MatrixXd q);
     
     // This function allows to set and update the TDCR parameters.
