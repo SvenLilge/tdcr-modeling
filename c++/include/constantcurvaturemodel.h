@@ -34,10 +34,10 @@ class ConstantCurvatureModel
 public:
 
 	// Constructor to set up the Constant Curvature model with default parameters
-    ConstantCurvatureModel();
-    
+	ConstantCurvatureModel();
+	
 	// Simple destructor
-    virtual ~ConstantCurvatureModel();
+	virtual ~ConstantCurvatureModel();
 	
 	// This function runs the forward kinematics for the TDCR. It returns true, if the forward kinematics were solved successfully.
 	//
@@ -47,25 +47,25 @@ public:
 	//		
 	// Outputs:		
 	// diskFrames			4x(4*n) matrix containing the current disk frames (4x4 transformation matrix for each discrete disk) of the robot as a stacked matrix.
-    bool forwardKinematics(Eigen::MatrixXd &diskFrames, Eigen::MatrixXd q);
-    
-    // This function allows to set and update the TDCR parameters.
+	bool forwardKinematics(Eigen::MatrixXd &diskFrames, Eigen::MatrixXd q);
+	
+	// This function allows to set and update the TDCR parameters.
 	//
 	// Inputs:
 	// length				std::array that holds the length of each of the two segments of the TDCR.
 	// number_disks			std::array that holds the number of disks for each of the two segments of the TDCR.
 	// pradius_disks		std::array that holds the pitch radius of the disks (distance between tendon routing and backbone) for each of the two segments of the TDCR.
 	// two_tendons			Specifies, if only two tendons for each segment are employed and actuated.
-    void setRobotParameters(std::array<double,2> length, std::array<int,2> number_disks, std::array<double,2> pradius_disks, bool two_tendons);
+	void setRobotParameters(std::array<double,2> length, std::array<int,2> number_disks, std::array<double,2> pradius_disks, bool two_tendons);
 
 private:
 	
 	// Member variables
-    std::array<double,2> m_length;
-    std::vector<Eigen::Vector3d> m_routing;
-    std::array<int,2> m_number_disks;
-    std::array<double,2> m_pradius_disks;
-    bool m_two_tendons;
+	std::array<double,2> m_length;
+	std::vector<Eigen::Vector3d> m_routing;
+	std::array<int,2> m_number_disks;
+	std::array<double,2> m_pradius_disks;
+	bool m_two_tendons;
 };
 
 #endif // CONSTANTCURVATUREMODEL_H
