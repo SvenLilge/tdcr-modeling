@@ -1,4 +1,4 @@
-## Modelling of a Tendon Driven Continuum Robot
+## Modeling of a Tendon Driven Continuum Robot
 
 This code implements different approaches to model the kinematics/statics of a tendon driven continuum robot (TDCR) found in the current state of the art.
 The implementation considers a two segment TDCR with three tendons per segment subject to an external load the robot's tip.
@@ -29,7 +29,23 @@ The C++ implementation makes heavy use of both the Eigen library and the GNU Sci
 - [GNU Scientific Library](https://www.gnu.org/software/gsl/)
  
 ### Installation Instructions using CMake (C++)
- 
+
+In the root directory of the C++ code (where the main.cpp file is located) run the following commands:
+
+	mkdir build
+	cd build
+	cmake ..
+	make
+
+Alternatively, the code can be compiled in Release mode for performance:
+	
+	mkdir build
+	cd build
+	cmake -DCMAKE_BUILD_TYPE=Release ..
+	make
+
+Afterwards, you can execute the code by running the executable "tdcr-modeling".
+
 ### More Information
 
 If you found the provided implementation of the TDCR modeling approaches helpful or used parts of it yourself and would like to refer to it in academic papers, the recommended way is to use the following BibTeX entry:
