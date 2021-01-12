@@ -17,8 +17,8 @@ Copyright (C) 2021 Continuum Robotics Laboratory, University of Toronto Mississa
 
 TendonDrivenRobot::TendonDrivenRobot()
 {
-
-
+	//Initialize member variables and set up default parameters for TDCR
+	
     mp_cr_model = new CosseratRodModel();
     mp_cc_model = new ConstantCurvatureModel();
     mp_pcc_model = new PiecewiseConstantCurvatureModel();
@@ -92,7 +92,9 @@ TendonDrivenRobot::TendonDrivenRobot()
 
 
 void TendonDrivenRobot::setRobotParameters(std::array<double, 2> length, double youngs_modulus, std::vector<Eigen::Vector3d> routing, std::array<int, 2> number_disks, std::array<double, 2> pradius_disks, double ro, bool two_tendons)
-{
+{	
+	
+	//Update parameters
     m_length[0]         = length[0];
     m_length[1]         = length[1];
     m_youngs_modulus    = youngs_modulus;
@@ -126,8 +128,6 @@ TendonDrivenRobot::~TendonDrivenRobot()
 
 }
 
-
-// q is an 6x1 vector containing the forces for each tendon or displacement in m in the case of the constat curvature model. Tendons should be located with the specified pitch radius
 bool TendonDrivenRobot::forwardKinematics(Eigen::Matrix4d &ee_frame, Eigen::MatrixXd q, Eigen::Vector3d f_ext, Eigen::Vector3d l_ext, Model model)
 {
 
