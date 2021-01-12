@@ -72,7 +72,7 @@ public:
 	// input				6x1 vector containing the current initial values for u and v at s = 0.
     void get_res(Eigen::MatrixXd &output, Eigen::MatrixXd input);
     
-    // This function enables a continuation mode for the modeling approaches that are utilizing an optimization scheme that is based on an initial guess.
+    // This function enables a continuation mode.
 	// That means, that every new run of the forward kinematics will use the final values for these variables obtained from the last forward kinematics solution as the new initial guess.
 	// This makes sense in cases, where configurations of the robot only change marginally (thus the initial guesses would be similar), 
 	// and can increase computation time a lot, since the algorithm will converge in just a couple of iterations.

@@ -13,6 +13,7 @@ Copyright (C) 2021 Continuum Robotics Laboratory, University of Toronto Mississa
 
 #include "subsegmentcosseratrodmodel.h"
 
+// Wrapper function for ODEs for GNU::GSL
 int differential_equations_sscr(double t, const double input[2], double deriv[2], void *param)
 {
 
@@ -40,6 +41,7 @@ int differential_equations_sscr(double t, const double input[2], double deriv[2]
     return GSL_SUCCESS;
 }
 
+// Wrapper function for non-linear boundary conditions for GNU::GSL
 int evaluate_boundary_conditions_sscr(const gsl_vector * x, void *param, gsl_vector * f)
 {
 
@@ -77,6 +79,7 @@ int evaluate_boundary_conditions_sscr(const gsl_vector * x, void *param, gsl_vec
     return GSL_SUCCESS;
 }
 
+// Callback function that can be used during non-linear squares solving
 void
 callback_sscr(const size_t iter, void *param,
               const gsl_multifit_nlinear_workspace *w)
@@ -110,6 +113,7 @@ callback_sscr(const size_t iter, void *param,
 
 SubsegmentCosseratRodModel::SubsegmentCosseratRodModel()
 {
+	//Initialize member variables and set up default parameters for TDCR
     m_length[0]         = 0.1;
     m_length[1]         = 0.1;
     m_youngs_modulus    = 60e9;
