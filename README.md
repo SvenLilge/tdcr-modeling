@@ -1,4 +1,4 @@
-## Modeling of a Tendon Driven Continuum Robot
+## Modeling of Tendon Driven Continuum Robots
 
 This code implements different approaches to model the kinematics/statics of a tendon driven continuum robot (TDCR) found in the current state of the art.
 The implementation considers a two segment TDCR with three tendons per segment subject to an external load the robot's tip.
