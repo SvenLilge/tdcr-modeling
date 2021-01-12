@@ -57,5 +57,6 @@ If you found the provided implementation of the TDCR modeling approaches helpful
 		volume={7},
 		pages={},
 		year={2021},
-		publisher={Frontiers}
+		publisher={Frontiers},
+		doi={10.3389/frobt.2020.630245}
 	}
