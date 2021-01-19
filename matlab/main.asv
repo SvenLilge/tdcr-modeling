@@ -1,0 +1,136 @@
+%% Matlab code for the case study of the TDCR  modeling review
+clear all;
+close all;
+
+addpath('Parameters/');
+addpath('Models/CCsub/');
+addpath('Models/Cosserat_2s/');
+addpath('Models/PRBM/');
+addpath('Models/CC_kin/');
+
+%% Load TDCR parameters
+tdcr_2segments;
+F = [2 0 0 0 1 0];
+Ftex = [0;0;0;0];
+
+%% Solving the CCsub model
+var0 = 0.01*ones(1,3*n_disk);
+var_ccsub = CCsub_solver(n,l,F,p_tendon,m_disk,m_bb,E,I,G,Ftex,Mtex,var0);
+
+%% plotting
+figure(1);
+[p_plot,p_last] = plot_tdcr_ccsub(l,p_tendon(1:3,:),n_disk,var_pcca,r_disk);
+view(90,0);
+
+% Construct robot shape with CCsub output
+s_disk = [0 L(1)/n(1):L(1)/(n(1)):L(1) L(1)+L(2)/n(2):L(2)/n(2):sum(L)];
+[stest,pos_ccsub] = construct_tdcr_ccsub(l,p_tendon(1:3,:),n_disk,var_pcca);
+
+%% Solving the VC model
+
+% Set up TDCR parameters
+param=setup_param_vc(0,0,0,0,sum(L),ro,ri,m_bb(1),E,nu,0,r_disk,m_disk(1),n_disk,L,r1(1:3),r2(1:3),r3(1:3));
+Fc = [F(1:3);F(4:6)]';
+
+% Shooting method for model solution
+
+%initial guess for linear and angular rate of change
+v_init_guess=[0;0;1]; 
+u_init_guess=[0;0;0]; 
+init_guess=[v_init_guess;u_init_guess];
+
+%solving the boundary value problem
+[y,vu_f] = VC_solver(init_guess,Fc,Ftex(1:3),L,param);
+sc= y(:,19); 
+g = [y(:,4:6) zeros(size(y,1),1) y(:,7:9) zeros(size(y,1),1) y(:,10:12) zeros(size(y,1),1) y(:,1:3) ones(size(y,1),1)];
+
+
+%% Plotting
+figure(2);
+plot_tdcr_vc(g,sc,L)
+view(90,0);
+
+%% Solving the Cosserat Rod model with discrete tendon force 
+
+% Shooting method for model solution
+
+%initial guess for linear and angular rate of change
+n_init_guess=[0;0;0]; 
+u_init_guess=[0;0;0]; 
+
+init_guess=[n_init_guess;u_init_guess];
+
+% The model is solved first of all with half of the tendon and external
+% forces for it to converge more easily, and then the full forces are
+% applied
+
+% Step 0.5
+Fk = F*0.5;
+Ftexk = Ftex*0.5;
+%solving initial value problem
+tic
+display('Cosserat model with partially constrained tendon: Step 0.5');
+[y,nu_f] = RT_IVP_2_discrete_5(init_guess,Fk,Ftexk(1:3),L,param,n,l);
+% Step 1
+display('Cosserat model with partially constrained tendon: Step 1');
+[y,nu_f] = RT_IVP_2_discrete_5(nu_f,F,Ftex(1:3),L,param,n,l);
+sc= y(:,19); 
+g = [y(:,4:6) zeros(size(y,1),1) y(:,7:9) zeros(size(y,1),1) y(:,10:12) zeros(size(y,1),1) y(:,1:3) ones(size(y,1),1)];
+tip = reshape(g(end,:),4,4);
+toc
+
+%% Plotting
+
+figure(3);
+drawBackbone2(g,sc,L)
+view(90,0);
+        
+
+%% Solving the PRBM model
+
+% Number of rigid bodies
+nrb = 4;
+% Length of rigid bodies, optimized with particle swarm algorithm in Chen
+% 2011
+gamma= [0.125 0.35 0.388 0.136]/sum([0.136 0.388 0.35 0.125]);
+
+%phi0 = pi/2;
+phi0 = 0;
+
+% Initialization
+var0 = repmat([phi0 0*ones(1,nrb)],1,n_disk);
+var_pcca_2 = reshape(var_pcca,[3,n_disk]);
+
+[var_prbm,exitflag,res] = prbm_solver(n,nrb,gamma,l,F,p_tendon,m_disk,m_bb,E,I,G,Ftex,Mtex,var0);
+
+%% Plotting
+figure(3);
+p_f = plot_tdcr_prbm(nrb,gamma,l,p_tendon,n_disk,var_prbm,r_disk);
+
+% Construct robot shape from the PRBM model solution
+[stest,pos_prbm] = construct_tdcr_prbm(nrb,gamma,l,p_tendon,n_disk,var_prbm);
+
+
+%% Solving the constant curvature model (geometric)
+
+% Compute tendon length from the robot shape obtained with Cosserat rod
+% model
+[delta_l] = calctendonlength2(g,sc,param,L);
+l_d = [-delta_l(1:3)/1000+L(1);-(delta_l(4:6)-delta_l(1:3))/1000+L(2)];
+
+var_cc = CC_solver(l_d,n,r_disk);
+
+% Construct robot shape with CC output
+[T1_cc,T2_cc] = construct_tdcr_cc(var_c
+
+%% Plotting
+figure(6);
+hold on;
+plot3(T2c_cc(:,13),T2c_cc(:,14),T2c_cc(:,15),'r');
+plot3(T1_cc(:,13),T1_cc(:,14),T1_cc(:,15),'r');
+hold off;
+xlabel('x'); ylabel('y'); zlabel('z');
+grid on;
+% axis equal;
+
+
