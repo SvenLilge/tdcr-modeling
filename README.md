@@ -51,12 +51,12 @@ Afterwards, you can execute the code by running the executable "tdcr-modeling".
 If you found the provided implementation of the TDCR modeling approaches helpful or used parts of it yourself and would like to refer to it in academic papers, the recommended way is to use the following BibTeX entry:
 
 	@article{rao2021tdcrmodeling,
-		title={How to model tendon-driven continuum robots and benchmark modelling performance},
-		author={Rao, Priyanka and Peyron, Quentin and Lilge, Sven and Burgner-Kahrs, Jessica},
-		journal={Frontiers in Robotics and AI},
-		volume={7},
-		pages={},
-		year={2021},
-		publisher={Frontiers},
-		doi={10.3389/frobt.2020.630245}
+	title={How to model tendon-driven continuum robots and benchmark modelling performance},
+	author={Rao, Priyanka and Peyron, Quentin and Lilge, Sven and Burgner-Kahrs, Jessica},
+  	journal={Frontiers in Robotics and AI},
+  	volume={7},
+  	pages={223},
+  	year={2021},
+  	publisher={Frontiers}
 	}
+
