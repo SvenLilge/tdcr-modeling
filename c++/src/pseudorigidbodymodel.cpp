@@ -171,6 +171,13 @@ void PseudoRigidBodyModel::setRobotParameters(std::array<double, 2> length, doub
     m_pradius_disks[1]  = pradius_disks[1];
     m_ro                = ro;
     m_routing           = routing;
+	
+    m_default_inits.resize(1,(m_joint_pos.size()+1)*(m_number_disks[0]+m_number_disks[1]));
+    for(int i = 0; i < m_default_inits.cols(); i++)
+    {
+        m_default_inits(0,i) = 0;
+    }
+    m_last_inits = m_default_inits;
 
 
 }
