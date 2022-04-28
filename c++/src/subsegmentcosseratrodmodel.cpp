@@ -273,6 +273,14 @@ void SubsegmentCosseratRodModel::setRobotParameters(std::array<double, 2> length
     {
         m_length_ss(i) = m_length[1]/m_number_disks[1];
     }
+	
+    m_default_inits.resize(1,6*getNumberOfTotalDisks());
+    for(int i = 0; i < getNumberOfTotalDisks();  i++)
+    {
+        m_default_inits.block(0,6*i,1,6) << 0, 0, 1, 0, 0, 0;
+
+    }
+    m_last_inits = m_default_inits;
 }
 
 SubsegmentCosseratRodModel::~SubsegmentCosseratRodModel()
