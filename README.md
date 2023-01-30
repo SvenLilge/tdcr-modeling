@@ -48,7 +48,7 @@ Afterwards, you can execute the code by running the executable "tdcr-modeling".
 
 ### More Information
 
-It might be worthwhile to dry different numerical solvers for the non-linear least squares fitting to check which offers the best convergence performance for a given set of TDCR parameters, tendon tensions and external loads. Different solvers can be commented and uncommented in the .cpp files of each implemented model. From experience, both the Levenberg-Marquadt solver (selected bt default) and the Dogleg solver perform generally well.
+It might be worthwhile to dry different numerical solvers for the non-linear least squares fitting to check which offers the best convergence performance for a given set of TDCR parameters, tendon tensions and external loads. Different solvers can be commented and uncommented in the .cpp files of each implemented model. From experience, both the Levenberg-Marquadt solver (selected by default) and the Dogleg solver perform generally well.
 
 If you found the provided implementation of the TDCR modeling approaches helpful or used parts of it yourself, please refer to it using the following BibTeX entry:
 
